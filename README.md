@@ -1,14 +1,14 @@
-# FPS
-Allows you to set a completely custom FPS limit on Weave.
+# Distance Calculator
+Allows you to calculate the distance between 2 points with 3 coordinates each in Minecraft using Weave
 
 ---
 
 ## Usage
-- You can use `/fps [value]` to set a custom FPS limit.
+- You can use `/distance <x1> <y1> <z1> <x2> <y2> <z2> <euclidean/manhattan>` to get the distance.
 
 ## Installation
-1. Download the [FPS](https://github.com/zircta/fps/releases) mod.
-2. Place the jars in your Weave mods folder.
+1. Download the [Distance Calculator](https://github.com/LunaTheFox20/weave-distance-calculator/releases) mod.
+2. Place the jar in your Weave mods folder.
     1. Windows: `%userprofile%\.weave\mods`
     2. Unix: `~/.weave/mods`
 3. Download [Lunar Client QT](https://github.com/Youded-byte/lunar-client-qt).
@@ -21,6 +21,6 @@ Allows you to set a completely custom FPS limit on Weave.
 3. The built jar file will be in `build/libs`.
 
 ## License
-- FPS is licensed under the [GNU General Public License Version 3](https://github.com/Zircta/fps/blob/main/LICENSE).
+- Distance Calculator is licensed under the [GNU General Public License Version 3](https://github.com/LunaTheFox20/weave-distance-calculator/blob/main/LICENSE).
 
 ---
