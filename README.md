@@ -1,6 +1,6 @@
 # Weave Distance Calculator
 
-This is a Minecraft mod that provides a command called "distance" to calculate the distance between two sets of coordinates using either the Euclidean or Manhattan method. This mod is designed for the Weave Loader platform.
+This is a Minecraft mod that provides a command called "distance" to calculate the distance between two sets of coordinates using either the Euclidean or Manhattan method.
 
 ## Table of Contents
 
