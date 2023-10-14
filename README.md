@@ -21,6 +21,6 @@ Allows you to calculate the distance between 2 points with 3 coordinates each in
 3. The built jar file will be in `build/libs`.
 
 ## License
-- Distance Calculator is licensed under the [GNU General Public License Version 3](https://github.com/LunaTheFox20/weave-distance-calculator/blob/main/LICENSE).
+- Distance Calculator is licensed under the [MIT License](https://github.com/LunaTheFox20/weave-distance-calculator/blob/main/LICENSE).
 
 ---
