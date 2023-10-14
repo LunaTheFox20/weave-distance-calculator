@@ -31,18 +31,18 @@ class DistanceCalculator : Command("distance") {
 
     override fun handle(args: Array<String>) {
         if (args.size != REQUIRED_ARGUMENT_COUNT) {
-            // Display an error message when the number of arguments is incorrect
             sendChatMessage(errorMessage.formattedText)
             return
         }
 
         try {
-            // Parse input coordinates and distance method
             val coordinates = args.take(6).map { it.toDouble() }
             val distanceMethod = DistanceMethod.valueOf(args[6].uppercase())
 
-            if (coordinates.any { it < X_MIN || it > X_MAX }) {
-                // Check if any coordinates are outside of Minecraft's allowed ranges
+            // Check if any coordinates are outside of Minecraft's allowed ranges
+            if (coordinates.any { it < X_MIN || it > X_MAX } ||
+                coordinates.any { it < Y_MIN || it > Y_MAX } ||
+                coordinates.any { it < Z_MIN || it > Z_MAX }) {
                 sendChatMessage("$PREFIX Invalid coordinates. Coordinates must be within the allowed Minecraft ranges.")
                 return
             }
@@ -55,7 +55,6 @@ class DistanceCalculator : Command("distance") {
             logger.error("Invalid input. Please provide valid numbers for coordinates.", e)
             sendChatMessage("$ERROR_PREFIX Invalid input. Please provide valid numbers for coordinates.")
         } catch (e: IllegalArgumentException) {
-            // Handle an invalid distance method
             sendChatMessage("$PREFIX Invalid distance method. Use 'euclidean' or 'manhattan'.")
         }
     }
