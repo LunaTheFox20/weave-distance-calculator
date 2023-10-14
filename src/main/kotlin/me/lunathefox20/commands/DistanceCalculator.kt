@@ -50,7 +50,7 @@ class DistanceCalculator : Command("distance") {
             val distance = distanceMethod.calculate(coordinates)
             val formattedDistance = String.format("%.2f", distance)
             // Display the calculated distance
-            sendChatMessage("$PREFIX The ${distanceMethod.name.lowercase()} distance is ~$formattedDistance blocks.")
+            sendChatMessage("$PREFIX The ${distanceMethod.name.lowercase()} distance between ($x1, $y1, $z1) and ($x2, $y2, $z2) is ~$formattedDistance blocks.")
         } catch (e: NumberFormatException) {
             logger.error("Invalid input. Please provide valid numbers for coordinates.", e)
             sendChatMessage("$ERROR_PREFIX Invalid input. Please provide valid numbers for coordinates.")
