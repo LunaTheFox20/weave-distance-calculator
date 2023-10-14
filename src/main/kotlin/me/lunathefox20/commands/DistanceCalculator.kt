@@ -13,8 +13,8 @@ class DistanceCalculator : Command("distance") {
         private val logger = LogManager.getLogger(DistanceCalculator::class.java)
 
         // Constants for chat message prefixes and required argument count
-        private const val PREFIX = "[§9§lDistance§r] "
-        private const val ERROR_PREFIX = "[§c§lError§r] "
+        private const val PREFIX = "§9§l[Distance]§r "
+        private const val ERROR_PREFIX = "§c§l[Error]§r "
         private const val REQUIRED_ARGUMENT_COUNT = 7
 
         // Limits for Minecraft coordinates
