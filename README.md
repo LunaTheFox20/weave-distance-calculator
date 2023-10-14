@@ -4,7 +4,12 @@ Allows you to calculate the distance between 2 points with 3 coordinates each in
 ---
 
 ## Usage
-- You can use `/distance <x1> <y1> <z1> <x2> <y2> <z2> <euclidean/manhattan>` to get the distance.
+- You can use `/distance <x1> <y1> <z1> <x2> <y2> <z2> <euclidean/manhattan>` to get the distance between these coordinates.
+- Examples are the following:
+```php
+/distance 93 48 -334 291 33 744 euclidean
+/distance -34 98 164 194 42 167 manhattan
+```
 
 ## Installation
 1. Download the [Distance Calculator](https://github.com/LunaTheFox20/weave-distance-calculator/releases) mod.
