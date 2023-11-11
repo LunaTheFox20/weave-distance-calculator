@@ -12,12 +12,10 @@ class DistanceCalculator : Command("distance") {
     companion object {
         private val logger = LogManager.getLogger(DistanceCalculator::class.java)
 
-        // Constants for chat message prefixes and required argument count
         private const val PREFIX = "§9§l[Distance]§r "
         private const val ERROR_PREFIX = "§c§l[Error]§r "
         private const val REQUIRED_ARGUMENT_COUNT = 7
 
-        // Limits for Minecraft coordinates
         private const val X_MIN = -30000000.0
         private const val X_MAX = 30000000.0
         private const val Y_MIN = -319.0
@@ -26,71 +24,65 @@ class DistanceCalculator : Command("distance") {
         private const val Z_MAX = 30000000.0
     }
 
-    // Error message for incorrect command usage
     private val errorMessage = ChatComponentText("$ERROR_PREFIX Usage: <x1> <y1> <z1> <x2> <y2> <z2> <euclidean/manhattan>\nExample 1: 392 -43 81 48 293 58 euclidean\nExample 2: 392 -43 81 48 293 58 manhattan")
 
     override fun handle(args: Array<String>) {
         if (args.size != REQUIRED_ARGUMENT_COUNT) {
-            sendChatMessage(errorMessage.formattedText)
+            sendChatMessage(Minecraft.getMinecraft(), errorMessage.formattedText)
             return
         }
 
         try {
-            val coordinates = args.take(6).map { it.toDouble() }
-            val distanceMethod = DistanceMethod.valueOf(args[6].uppercase())
+            val coordinates = args.take(6).map { it.toDouble() }.toTypedArray()
 
-            // Check if any coordinates are outside of Minecraft's allowed ranges
-            if (coordinates.any { it < X_MIN || it > X_MAX } ||
-                coordinates.any { it < Y_MIN || it > Y_MAX } ||
-                coordinates.any { it < Z_MIN || it > Z_MAX }) {
-                sendChatMessage("$PREFIX Invalid coordinates. Coordinates must be within the allowed Minecraft ranges.")
+            if (!isValidCoordinateRange(coordinates.asList())) {
+                sendChatMessage(Minecraft.getMinecraft(), "$PREFIX Invalid coordinates. Coordinates must be within the allowed Minecraft ranges.")
                 return
             }
 
-            val distance = distanceMethod.calculate(coordinates)
+            val distanceMethod = DistanceMethod.valueOf(args[6].uppercase())
+            val startX = coordinates[0]
+            val startY = coordinates[1]
+            val startZ = coordinates[2]
+            val endX = coordinates[3]
+            val endY = coordinates[4]
+            val endZ = coordinates[5]
+
+            val distance = distanceMethod.calculate(startX, startY, startZ, endX, endY, endZ)
             val formattedDistance = String.format("%.2f", distance)
-            // Display the calculated distance
-            sendChatMessage("$PREFIX The ${distanceMethod.name.lowercase()} distance between (${coordinates[0]}, ${coordinates[1]}, ${coordinates[2]}) and (${coordinates[3]}, ${coordinates[4]}, ${coordinates[5]}) is ~$formattedDistance blocks.")
+
+            sendChatMessage(Minecraft.getMinecraft(), "$PREFIX The ${distanceMethod.name.lowercase()} distance between " +
+                    "($startX, $startY, $startZ) and ($endX, $endY, $endZ) is ~$formattedDistance blocks.")
         } catch (e: NumberFormatException) {
             logger.error("Invalid input. Please provide valid numbers for coordinates.", e)
-            sendChatMessage("$ERROR_PREFIX Invalid input. Please provide valid numbers for coordinates.")
+            sendChatMessage(Minecraft.getMinecraft(), "$ERROR_PREFIX Invalid input. Please provide valid numbers for coordinates.")
         } catch (e: IllegalArgumentException) {
-            sendChatMessage("$PREFIX Invalid distance method. Use 'euclidean' or 'manhattan'.")
+            sendChatMessage(Minecraft.getMinecraft(), "$PREFIX Invalid distance method. Use 'euclidean' or 'manhattan'.")
         }
     }
 
-    private fun sendChatMessage(message: String) {
-        // Helper function to send a chat message to the player
-        Minecraft.getMinecraft().thePlayer?.addChatMessage(ChatComponentText(message))
+    private fun sendChatMessage(minecraft: Minecraft, message: String) {
+        minecraft.thePlayer?.addChatMessage(ChatComponentText(message))
+    }
+
+    private fun isValidCoordinateRange(coordinates: List<Double>): Boolean {
+        return coordinates.all { it in X_MIN..X_MAX } &&
+                coordinates.all { it in Y_MIN..Y_MAX } &&
+                coordinates.all { it in Z_MIN..Z_MAX }
     }
 }
 
 enum class DistanceMethod {
     EUCLIDEAN {
-        override fun calculate(coordinates: List<Double>): Double {
-            val x1 = coordinates[0]
-            val y1 = coordinates[1]
-            val z1 = coordinates[2]
-            val x2 = coordinates[3]
-            val y2 = coordinates[4]
-            val z2 = coordinates[5]
-            // Calculate Euclidean distance
-            return sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2) + (z2 - z1).pow(2))
+        override fun calculate(startX: Double, startY: Double, startZ: Double, endX: Double, endY: Double, endZ: Double): Double {
+            return sqrt((endX - startX).pow(2) + (endY - startY).pow(2) + (endZ - startZ).pow(2))
         }
     },
     MANHATTAN {
-        override fun calculate(coordinates: List<Double>): Double {
-            val x1 = coordinates[0]
-            val y1 = coordinates[1]
-            val z1 = coordinates[2]
-            val x2 = coordinates[3]
-            val y2 = coordinates[4]
-            val z2 = coordinates[5]
-            // Calculate Manhattan distance
-            return abs(x2 - x1) + abs(y2 - y1) + abs(z2 - z1)
+        override fun calculate(startX: Double, startY: Double, startZ: Double, endX: Double, endY: Double, endZ: Double): Double {
+            return abs(endX - startX) + abs(endY - startY) + abs(endZ - startZ)
         }
     };
 
-    // Abstract function to calculate distance
-    abstract fun calculate(coordinates: List<Double>): Double
+    abstract fun calculate(startX: Double, startY: Double, startZ: Double, endX: Double, endY: Double, endZ: Double): Double
 }
